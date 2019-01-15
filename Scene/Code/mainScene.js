@@ -3,6 +3,7 @@ cc.Class({
 
     properties: {
         pageNode : cc.Node,
+        inputBox : cc.EditBox,
     },
 
     // use this for initialization
@@ -16,6 +17,8 @@ cc.Class({
     },
 
     onClickThrow (){
-
+        let string = this.inputBox.string;
+        let rewardDic = G_Fuc.getGotDic(string);
+        G_Common.log(rewardDic);
     },
 });
