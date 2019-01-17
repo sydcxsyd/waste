@@ -7,9 +7,9 @@
 // Learn life-cycle callbacks:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/life-cycle-callbacks.html
-var gameConfig = require("GameConfig")
-var userData = require("userData")
-var http = require("HTTP")
+// var gameConfig = require("GameConfig")
+// var userData = require("userData")
+// var http = require("HTTP")
 cc.Class({
     extends: cc.Component,
 

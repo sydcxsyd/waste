@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.611443228633324,
-      "y": 0.611443228633324,
+      "x": 0.5173906936772995,
+      "y": 0.5173906936772995,
       "z": 1
     },
     "_quat": {
@@ -82,10 +82,10 @@
     "_level": 0,
     "_components": [
       {
-        "__id__": 37
+        "__id__": 38
       },
       {
-        "__id__": 38
+        "__id__": 39
       }
     ],
     "_prefab": null,
@@ -1751,7 +1751,11 @@
     "_enabled": true,
     "duration": 0.1,
     "zoomScale": 1.2,
-    "clickEvents": [],
+    "clickEvents": [
+      {
+        "__id__": 37
+      }
+    ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
     "_N$transition": 2,
@@ -1820,6 +1824,16 @@
       "__id__": 32
     },
     "_id": "53/6VSf/BOBpj9rKmMoff7"
+  },
+  {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 2
+    },
+    "component": "",
+    "_componentId": "280c3rsZJJKnZ9RqbALVwtK",
+    "handler": "onClickShare",
+    "customEventData": ""
   },
   {
     "__type__": "cc.Canvas",

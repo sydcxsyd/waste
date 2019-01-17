@@ -9,6 +9,9 @@ cc.Class({
     // onLoad () {},
 
     start () {
+        if(CC_WECHATGAME){
+            wx.login();
+        }
 
     },
 
