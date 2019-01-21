@@ -26,6 +26,8 @@ window.G_User = {
 
     },
 
-
+    getFightNum (){
+        return (this.user.brilliant + this.user.strong + this.user.talk + this.user.speed + this.user.big ) * 10
+    },
 
 };

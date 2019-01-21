@@ -1,5 +1,5 @@
-var GameConfig = require("./data/GameConfig")
-var userData = require("./data/userData")
+// var GameConfig = require("./data/GameConfig")
+// var userData = require("./data/userData")
 cc.Class({
     extends: cc.Component,
 
@@ -32,7 +32,7 @@ cc.Class({
 
     onLoad () {
         //GameData.initData();
-        
+
     },
 
     start () {
@@ -54,7 +54,7 @@ cc.Class({
             self.shareBeforeTime = Date.parse(mydate1);
 
             var curData = new Date();
-            var time = Math.floor(curData.getTime()); 
+            var time = Math.floor(curData.getTime());
 
            var imageUrl = "https://img.mtxyx.com/joyzoo/sharepic/shareImg01.png?" + time;
 
@@ -105,9 +105,9 @@ cc.Class({
                 //         }
                 //     }
                 // }
-                
+
             });
-        }      
+        }
 
     },
 
@@ -120,7 +120,7 @@ cc.Class({
     //     for(let i = 0; i < 1; i++){
     //         var successCb = function(resp){
     //             var info = JSON.parse(JSON.stringify(resp));
-    //             if(info && info.data){  
+    //             if(info && info.data){
     //                 Game.shareImageInfo[i] = [];
     //                 Game.shareImageInfo[i].title = info.data.res.des;
     //                 var remoteUrl = info.data.res.url;
@@ -169,7 +169,7 @@ cc.Class({
         this.initDetail();
 
         this.initHelpList(HelpUserArr);
-        
+
     },
 
     initHelpList:function( HelpUserArr ){
@@ -180,8 +180,8 @@ cc.Class({
             return;
         }
 
-        this.feederNumLabel.string = "饲养员数量："+ HelpUserArr.length; 
-        this.feederAddLabel.string = "饲养员加成："+ HelpUserArr.length * 10 + "%"; 
+        this.feederNumLabel.string = "饲养员数量："+ HelpUserArr.length;
+        this.feederAddLabel.string = "饲养员加成："+ HelpUserArr.length * 10 + "%";
         for(var i = 0;  i< HelpUserArr.length; i++)
         {
             this.createImage( HelpUserArr[i].icon, i);
@@ -195,7 +195,7 @@ cc.Class({
             return;
         }
 
-        if (CC_WECHATGAME) {          
+        if (CC_WECHATGAME) {
             try {
                 let image = wx.createImage();
                 image.onload = () => {
@@ -234,14 +234,14 @@ cc.Class({
     initDetail:function(){
         this.houseLvLabel.string = "场馆等级：" + "LV" + this.ground.curGroundData.level;
         this.setProduct();
-        this.feederNumLabel.string = "饲养员数量： 1" 
+        this.feederNumLabel.string = "饲养员数量： 1"
         this.feederAddLabel.string = "饲养员加成：400%"
     },
 
     showAnimal: function(){
 
         var count = 0;
-        
+
         // for(var i = 0; i < 5; i ++){
         //     var animal = cc.instantiate(this.animalPrefab);
         //     this.animalNode.addChild(animal);
@@ -270,7 +270,7 @@ cc.Class({
 
                 animalScript.setAnimalSprite(this.curAnimalArrCfg[i].id, this.curAnimalArrCfg[i].level, animalCountTbl[i]);
                 animalScript.moveAction();
-                
+
                 //animal.scale = 0.8;
 
                 var randomX = (Math.random() * this.groundNode.width) - (this.groundNode.width / 2);
@@ -310,11 +310,11 @@ cc.Class({
         console.log(" zooInx：", this.zooInx);
         console.log(" houseBaseId：", this.curGroundData.houseBaseId);
 
-        var friAdd = friNum * 0.1;      
+        var friAdd = friNum * 0.1;
         console.log(" 原始速度: " + totalProduct );
         console.log(" 好友加成: " + friAdd );
         var productPerSec = totalProduct *(1 + addtion + friAdd);
-        productPerSec = Math.floor(productPerSec * 100) / 100; 
+        productPerSec = Math.floor(productPerSec * 100) / 100;
         this.pruduceInfoLabel.string = Math.floor(productPerSec);
         this.coinSpeedLabel.string = "场馆赚钱速度：" + productPerSec +"金币/s"
         this.aniNumLabel.string = "动物总量：" + totalAnimalCount;
@@ -371,7 +371,7 @@ cc.Class({
 
                 this.animalYPos.push(animal.y)
                 // 处理小动物层级
-                
+
             }
 
             var result = this.animalTbl.sort(function(a, b){
@@ -381,7 +381,7 @@ cc.Class({
             for (var i = 0; i < this.animalTbl.length; i ++){
                 this.animalTbl[i].zIndex = i + 1;
             }
-        }      
+        }
     },
 
     onClickRuleBg : function(){

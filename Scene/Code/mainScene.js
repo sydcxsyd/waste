@@ -21,4 +21,10 @@ cc.Class({
         let rewardDic = G_Fuc.getGotDic(string);
         G_Common.log(rewardDic);
     },
+
+    onClickShare (){
+        G_Common.shareToWx(function () {
+            console.log("雅蠛蝶")
+        })
+    },
 });
