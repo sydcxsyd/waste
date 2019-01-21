@@ -14,6 +14,5 @@ window.G_Common = {
         }else{
             cc.log(info);
         }
-
     }
 };

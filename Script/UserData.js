@@ -16,5 +16,16 @@ window.G_User = {
         }else{
             this.user = Object.create(User);
         }
-    }
+    },
+
+    addProper : function(proper,addNum){
+
+    },
+
+    changeProper : function(proper,changeToNum){
+
+    },
+
+
+
 };

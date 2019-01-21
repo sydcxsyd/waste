@@ -22,4 +22,5 @@ window.G_Local = {
     load (key){
         return cc.sys.localStorage.getItem(key);
     },
+
 };
