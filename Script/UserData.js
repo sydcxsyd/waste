@@ -30,7 +30,7 @@ window.G_User = {
     },
 
     changeProper : function(properName,changeToNum){
-        this.userProper[addNum] = changeToNum;
+        this.userProper[properName] = changeToNum;
         G_Local.saveObj(this._user_save,this.user);
     },
 
