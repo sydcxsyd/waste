@@ -41,4 +41,13 @@ window.G_Common = {
             callBack();
         });
     },
+
+    getWXNowDate (){
+        if(CC_WECHATGAME){
+            return new Date(wx.Performance.now());
+        }else{
+            return Date.now();
+        }
+    },
+
 };
