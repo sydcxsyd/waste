@@ -124,4 +124,8 @@ window.G_WX = {
         console.log("wxShare");
     },
 
+    showVideo (){
+
+    },
+
 };

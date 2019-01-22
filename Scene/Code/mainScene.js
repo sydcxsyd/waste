@@ -19,7 +19,7 @@ cc.Class({
 
     // use this for initialization
     onLoad: function () {
-
+        this.reloadData();
     },
 
     // called every frame
@@ -27,26 +27,45 @@ cc.Class({
 
     },
 
-    onClickThrow (){
-        let string = this.inputBox.string;
-        let rewardDic = G_Fuc.getGotDic(string);
-        G_Common.log(rewardDic);
-    },
-
-    onClickShare (){
-        G_Common.shareToWx(function () {
-            console.log("雅蠛蝶")
-        })
-    },
-
+    //===================================== enter page =====================================
     onClickWriteBtn (){
         this.enterPage.active = true;
     },
 
+    onClickThrow (){
+        let string = this.inputBox.string;
+        let rewardDic = G_Fuc.getGotDic(string);
+        this.enterPage.active = false;
+        G_Common.log(rewardDic);
+        this.showReward(rewardDic);
+        for(var i in rewardDic){
+            G_User.user[i] += rewardDic[i];
+        }
+
+        this.reloadData();
+    },
+
+    playThrowAction (){
+
+    },
+
+    //===================================== reward page =====================================
+    showReward (rewardDic){
+
+    },
+
+    onClickShare (){
+        G_WX.shareToWx(function () {
+            console.log("雅蠛蝶")
+        })
+    },
+
+    //===================================== history page =====================================
     onClickHistoryBtn(){
         this.historyPage.active = true;
     },
 
+    //===================================== home page =====================================
     reloadData (){
         brilliantLabel.string = G_User.user.brilliant;
         strongLabel.string = G_User.user.strong;
