@@ -16,38 +16,10 @@ window.G_Common = {
         }
     },
 
-    shareToWx (callBack,title,imageUrl) {
-        if(!CC_WECHATGAME){
-            return;
-        }
-        console.log("shareToWx");
-        if(!title){
-            title = "test";
-        }
-        if(!imageUrl){
-            imageUrl = "";
-        }
 
-        wx.shareAppMessage({
-            title: title,
-            imageUrl: imageUrl,
-            query: "",
-            cancel : function(){
-                console.log("share cancel ")
-            }
-        });
-        //  全局的监听 onshow
-        wx.onShow(function(res) {
-            callBack();
-        });
-    },
 
-    getWXNowDate (){
-        if(CC_WECHATGAME){
-            return new Date(wx.Performance.now());
-        }else{
-            return Date.now();
-        }
-    },
+
+
+
 
 };

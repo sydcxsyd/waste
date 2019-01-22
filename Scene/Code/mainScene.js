@@ -47,5 +47,16 @@ cc.Class({
         this.historyPage.active = true;
     },
 
+    reloadData (){
+        brilliantLabel.string = G_User.user.brilliant;
+        strongLabel.string = G_User.user.strong;
+        talkLabel.string = G_User.user.talk;
+        speedLabel.string = G_User.user.speed;
+        bigLabel.string = G_User.user.big;
+        fightLabel.string = G_User.getFightNum();
+    },
 
+    reloadHead (){
+
+    },
 });
