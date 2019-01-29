@@ -16,10 +16,8 @@ window.G_Common = {
         }
     },
 
-
-
-
-
-
+    isInteger(obj){
+        return typeof obj === 'number' && obj%1 === 0;      //是整数，则返回true，否则返回false
+    },
 
 };
