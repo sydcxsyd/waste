@@ -43,7 +43,7 @@ window.G_GameCen = {
     },
 
     createRandomPoint : function(abandonTypeList){
-        let pointData = Object.create(pointData);
+        let pointData = Object.create(this.pointData);
         abandonTypeList = abandonTypeList || [];
         let typeList = [];
         for(let i in G_Con.pointType){
