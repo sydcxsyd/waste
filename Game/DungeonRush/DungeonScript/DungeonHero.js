@@ -17,7 +17,7 @@ let Hero = {
     level : 0,
 
     skills : {},
-    
+
     init (){
 
     },
