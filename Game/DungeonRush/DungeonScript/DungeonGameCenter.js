@@ -3,6 +3,7 @@ let Hero = ("DungeonHero");
 window.G_GameCen = {
     cellData : {
         type : -1,
+        pos : null,
     },
     len : 0,
     gameDic : null,
@@ -18,7 +19,8 @@ window.G_GameCen = {
             dic[i] = [];
             for(let j = 0 ; j < this.len ;j++){
                 let abandonList = isMonster ? null : [G_Con.cellType.monster];
-                dic[i][j] = this.createRandomPoint(abandonList)
+                dic[i][j] = this.createRandomPoint(abandonList);
+                dic[i][j].pos = cc.v2(i,j);
             }
         }
         return dic;
@@ -42,19 +44,40 @@ window.G_GameCen = {
         return cellData;
     },
 
-    caculateDamage (){
+    caculateResult (cellList){
+        if(cellList.length == 0){
+            return;
+        }
+        switch (cellList[0].type) {
+            case G_Con.cellType.coin:
+                this.caculateCoins(cellList);
+                break;
+            case G_Con.cellType.shield:
+                this.caculateShield(cellList);
+                break;
+            case G_Con.cellType.monster:
+            case G_Con.cellType.sword:
+                this.caculateDamage(cellList);
+                break;
+            case G_Con.cellType.heal:
+                this.caculateHealth(cellList);
+                break;
+        }
+    },
+
+    caculateDamage (cellList){
 
     },
 
-    caculateHealth (){
+    caculateHealth (cellList){
 
     },
 
-    caculateCoins (){
+    caculateCoins (cellList){
 
     },
 
-    caculateShield (){
+    caculateShield (cellList){
 
     },
 };

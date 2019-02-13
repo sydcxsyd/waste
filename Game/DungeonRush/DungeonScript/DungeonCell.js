@@ -2,7 +2,7 @@
 cc.Class({
     extends: cc.Component,
     properties: {
-        type : {
+        cellData : {
             default : 0,
             visible : false,
         },
@@ -14,7 +14,7 @@ cc.Class({
 
     },
 
-    init (type){
-        this.type = type;
+    init (cellData){
+        this.cellData = cellData;
     },
 });

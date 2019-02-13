@@ -128,4 +128,57 @@ window.G_WX = {
 
     },
 
+    showBanner (isShow){
+        if(!CC_WECHATGAME){
+            return;
+        }
+
+        if(!this.bannerAd){
+            let phone = wx.getSystemInfoSync();
+            this.bannerAd  = wx.createBannerAd({
+                adUnitId: 'adunit-65d797e47b8b0a5e',
+                style: {
+                    left: 0,
+                    top: 0,
+                    width: phone.screenWidth,
+                    // height: 40,
+                },
+
+            })
+
+            this.bannerAd.onResize(function() {
+                let phone = wx.getSystemInfoSync();
+                let w = phone.screenWidth / 2;
+                let h = phone.screenHeight;
+                // this.bannerAd.style.left = w - this.bannerAd.style.realWidth / 2 + 0.1;
+                this.bannerAd.style.top = h - this.bannerAd.style.realHeight + 0.1;
+            })
+
+            this.bannerAd.onError(function (res) {
+                console.log(res)
+            })
+        }
+
+        if(isShow){
+            this.bannerAd.show()
+        }else{
+            this.bannerAd.hide()
+        }
+    },
+
+    getSysPlatform (){
+        try {
+            const res = wx.getSystemInfoSync()
+            if(res.platform == "android"){
+                return cc.sys.OS_ANDROID;
+            }else if(res.platform == "ios"){
+                return cc.sys.OS_IOS;
+            }else{
+                return cc.sys.OS_IOS;
+            }
+        } catch (e) {
+            return cc.sys.OS_WINDOWS;
+        }
+    },
+
 };
