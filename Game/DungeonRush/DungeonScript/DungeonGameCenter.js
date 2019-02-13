@@ -3,7 +3,7 @@ let Hero = ("DungeonHero");
 window.G_GameCen = {
     cellData : {
         type : -1,
-        pos : null,
+        vec : null,
     },
     len : 0,
     gameDic : null,
@@ -20,7 +20,7 @@ window.G_GameCen = {
             for(let j = 0 ; j < this.len ;j++){
                 let abandonList = isMonster ? null : [G_Con.cellType.monster];
                 dic[i][j] = this.createRandomPoint(abandonList);
-                dic[i][j].pos = cc.v2(i,j);
+                dic[i][j].vec = cc.v2(i,j);
             }
         }
         return dic;
