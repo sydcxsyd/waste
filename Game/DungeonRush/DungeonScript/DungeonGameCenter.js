@@ -14,7 +14,7 @@ window.G_GameCen = {
     },
 
     _getDic (isMonster){
-        let dic = {};
+        let dic = [];
         for(let i = 0 ; i < this.len ;i++){
             dic[i] = [];
             for(let j = 0 ; j < this.len ;j++){

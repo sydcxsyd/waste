@@ -6,4 +6,6 @@ window.G_Con = {
         monster : 4,
         coin : 5,
     },
+
+    leastChooseNum : 3,
 };

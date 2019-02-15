@@ -15,10 +15,6 @@ cc.Class({
         // ============================== component ==============================
         mapNode : cc.Node,
         // ============================== scene property ==============================
-        sceneType : {
-            visible : false,
-            default : 0,
-        },
 
     },
 
@@ -32,18 +28,19 @@ cc.Class({
             set: this.changeSceneType.bind(this),
         })
 
-        this.cellDic = null;
+        this.allCellDic = null;
+        this.playerChooseList = [];
     },
 
     getCellByVec (vec){
-        return this.cellDic[vec.x][vec.y];
+        return this.allCellDic[vec.x][vec.y];
     },
 
     start () {
         this.mapNode.on(cc.Node.EventType.TOUCH_START,this.touchStart);
         this.mapNode.on(cc.Node.EventType.TOUCH_MOVE,this.touchMove);
         this.mapNode.on(cc.Node.EventType.TOUCH_END,this.touchEnd);
-        this.mapNode.on(cc.Node.EventType.TOUCH_CANCEL,this.touchcancel);
+        this.mapNode.on(cc.Node.EventType.TOUCH_CANCEL,this.touchCancel);
     },
 
     reloadHero (){
@@ -60,27 +57,62 @@ cc.Class({
     },
 
     touchStart (event){
+        if(this.sceneType != SceneType.playerFreeMove){
+            return false;
+        }
         let pos = event.getLocation();
         let vec = G_Fuc.getVecByPos(pos);
         let cell = this.getCellByVec(vec);
         if(cell.isTouchAvalible()){
-            this.playChooseCell(cell);
+            this.addChooseCell(cell);
         }
     },
 
     touchMove (event){
         let pos = event.getLocation();
+
+        if(pos.y <= -40 || pos.y >= this.mapNode.getContentSize().height + 40){
+            this.clearChooseCell();
+        }else{
+            let vec = G_Fuc.getVecByPos(pos);
+            let cell = this.getCellByVec(vec);
+            if(cell.isTouchAvalible()){
+                this.addChooseCell(cell);
+            }
+        }
     },
 
     touchEnd (event){
-
+        if(this.playerChooseList.length > G_Con.leastChooseNum){
+            this.sceneType = SceneType.playerMove;
+        }
     },
 
-    touchcancel (event){
-
+    touchCancel (event){
+        if(this.playerChooseList.length > G_Con.leastChooseNum){
+            this.sceneType = SceneType.playerMove;
+        }
     },
 
-    playChooseCell (cell){
+    addChooseCell (cell){
+        if(this.playerChooseList.length == 0){
+            this.checkChooseAvalible(cell);
+        }
+        this.playerChooseList.push(cell);
+    },
+
+    clearChooseCell (){
+
+        this.playerChooseList.length = 0;
+    },
+
+    allCellsDo (fuc){
+        this.allCellDic.forEach((element, index, array) => {
+            element.forEach(fuc)
+        });
+    },
+
+    checkChooseAvalible (cell){
 
     },
 
