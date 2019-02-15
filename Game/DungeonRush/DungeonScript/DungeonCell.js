@@ -35,8 +35,8 @@ cc.Class({
     },
 
     cellDownAction (startVec,endVec){
-        let startPos = G_Fuc.getPosByVec(startVec);
-        let endPos = G_Fuc.getPosByVec(endVec);
+        let startPos = G_Fuc.getCenterPosByVec(startVec);
+        let endPos = G_Fuc.getCenterPosByVec(endVec);
         this.node.position = startPos;
         this.node.runAction(cc.moveTo(endPos,1));
     },
@@ -49,6 +49,8 @@ cc.Class({
         }
     },
 
-
+    isTouchAvalible (){
+        return this.choosable && !this.beChoosed;
+    },
 
 });
