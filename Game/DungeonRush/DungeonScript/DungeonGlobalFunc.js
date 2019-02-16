@@ -13,5 +13,13 @@ window.G_Fuc = {
         return vec;
     },
 
-    
+    checkCellEnableConnect (cellData1,cellData2){
+        if(cellData1.type == cellData2.type){
+            return true;
+        }else if((cellData1.type == G_Con.cellType.sword || cellData1.type == G_Con.cellType.sword)
+            && (cellData2.type == G_Con.cellType.sword || cellData2.type == G_Con.cellType.sword)){
+            return true;
+        }
+        return false;
+    },
 }

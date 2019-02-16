@@ -29,7 +29,7 @@ cc.Class({
         })
 
         this.allCellDic = null;
-        this.playerChooseList = [];
+        this.chooseCellsList = [];
     },
 
     getCellByVec (vec){
@@ -78,32 +78,51 @@ cc.Class({
             let cell = this.getCellByVec(vec);
             if(cell.isTouchAvalible()){
                 this.addChooseCell(cell);
+            }else if(cell.beChoosed && cell == this.chooseCellsList[this.chooseCellsList.length - 2]){
+                this.delLastChooseCell();
             }
         }
     },
 
     touchEnd (event){
-        if(this.playerChooseList.length > G_Con.leastChooseNum){
+        if(this.chooseCellsList.length > G_Con.leastChooseNum){
             this.sceneType = SceneType.playerMove;
         }
     },
 
     touchCancel (event){
-        if(this.playerChooseList.length > G_Con.leastChooseNum){
+        if(this.chooseCellsList.length > G_Con.leastChooseNum){
             this.sceneType = SceneType.playerMove;
         }
     },
 
     addChooseCell (cell){
-        if(this.playerChooseList.length == 0){
-            this.checkChooseAvalible(cell);
+        if(this.chooseCellsList.length == 0){
+            this.showChooseAvalible(cell);
         }
-        this.playerChooseList.push(cell);
+        this.chooseCellsList.push(cell);
+        cell.chooseCell(true);
+        this.reloadChooseShow();
+    },
+
+    delLastChooseCell (){
+        let cell = this.chooseCellsList.pop();
+        cell.chooseCell(false);
+        this.reloadChooseShow();
     },
 
     clearChooseCell (){
+        this.chooseCellsList.length = 0;
+        this.allCellsDo(cell => {
+            cell.backToNoChoose();
+        })
+    },
 
-        this.playerChooseList.length = 0;
+    reloadChooseShow (){
+        if(this.chooseCellsList.length == 1){
+            return;
+        }
+
     },
 
     allCellsDo (fuc){
@@ -112,12 +131,8 @@ cc.Class({
         });
     },
 
-    checkChooseAvalible (cell){
-
-    },
-
-    update(dt){
-        this.updateType();
+    showChooseAvalible (cell){
+        this.allCellsDo(tCell => tCell.setChooseEnable(G_Fuc.checkCellEnableConnect(cell.cellData,tCell.cellData)));
     },
 
     changeSceneType (value){
@@ -125,7 +140,11 @@ cc.Class({
         this.____sceneType = value;
     },
 
-    updateType (){
+    update(dt){
+        this.updateSceneType();
+    },
+
+    updateSceneType (){
         switch (this.sceneType) {
             case SceneType.init :
                 break;

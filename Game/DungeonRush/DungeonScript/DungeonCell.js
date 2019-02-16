@@ -53,4 +53,19 @@ cc.Class({
         return this.choosable && !this.beChoosed;
     },
 
+    setChooseEnable (isChoosable){
+        this.choosable = isChoosable;
+        this.turnToDark(!this.choosable);
+    },
+
+    chooseCell (isChoosed){
+        this.beChoosed = isChoosed;
+    },
+
+    backToNoChoose (){
+        this.chooseCell(false);
+        this.turnToDark(false);
+        this.choosable = true;
+    },
+
 });
