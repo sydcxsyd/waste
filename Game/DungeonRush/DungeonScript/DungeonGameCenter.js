@@ -13,20 +13,23 @@ window.G_GameCen = {
         this.gameDic = this._getDic(false);
     },
 
+    getCellDataByVec (vec){
+        return this.gameDic[vec.x][vec.y];
+    },
+
     _getDic (isMonster){
         let dic = [];
         for(let i = 0 ; i < this.len ;i++){
             dic[i] = [];
             for(let j = 0 ; j < this.len ;j++){
                 let abandonList = isMonster ? null : [G_Con.cellType.monster];
-                dic[i][j] = this.createRandomPoint(abandonList);
-                dic[i][j].vec = cc.v2(i,j);
+                dic[i][j] = this.createRandomPoint(abandonList,cc.v2(i,j));
             }
         }
         return dic;
     },
 
-    createRandomPoint : function(abandonTypeList){
+    createRandomPoint : function(abandonTypeList,vec){
         let cellData = Object.create(this.cellData);
         abandonTypeList = abandonTypeList || [];
         let typeList = [];
@@ -41,7 +44,49 @@ window.G_GameCen = {
         }
 
         cellData.type = typeList[Math.floor(typeList.length * Math.random())];
+        cellData.vec = vec;
         return cellData;
+    },
+
+    delPoints (points){
+        for(let value of points){
+            this.delPoint(value);
+        }
+    },
+
+    delPoint (point){
+        this.gameDic[point.x][point.y] = null;
+    },
+
+    fillDic (){
+        let moveList = [];
+        let moveObj = {
+            from : null,
+            to : null,
+        };
+        this.gameDic.forEach((arr,indexX)=> arr.forEach((cellData,indexY)=> {
+            if(!cellData){
+                for(let i = indexY; i < this.len; i++){
+                    if(this.gameDic[indexX][i]){
+                        let tMoveObj = Object.create(moveObj);
+                        tMoveObj.from = cc.v2(indexX,indexY);
+                        tMoveObj.to = cc.v2(indexX,i);
+                        moveList.push(tMoveObj);
+                        this.gameDic[indexX][indexY] = this.gameDic[indexX][i];
+                        this.gameDic[indexX][i] = null;
+                    }
+                }
+            }
+        }))
+
+        for(let value of moveList){
+            this.gameDic[i][j] = this.createRandomPoint(null,value.from);
+            let tMoveObj = Object.create(moveObj);
+            tMoveObj.to = value.from;
+            moveList.push(tMoveObj);
+        }
+
+        return moveList;
     },
 
     caculateResult (cellList){
