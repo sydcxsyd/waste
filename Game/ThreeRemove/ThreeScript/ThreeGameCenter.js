@@ -6,15 +6,24 @@ window.G_GameCen = {
     },
     initGame : function(len){
         this.len = len;
-        this.gameDic = {};
-        for(let x = 0 ; x < len ; x++){
-            this.gameDic[x] = {};
-            for(let y = 0 ; y < len ; y++){
-                this.gameDic[x][y] = this.createRandomPoint();
+        this.gameDic = this._getDic(false);
+        return this.gameDic;
+    },
+
+    _getDic (isEmpty){
+        let gameDic = {};
+        for(let x = 0 ; x < this.len ; x++){
+            gameDic[x] = {};
+            for(let y = 0 ; y < this.len ; y++){
+                if(isEmpty){
+                    gameDic[x][y] = 0;
+                }else{
+                    gameDic[x][y] = this.createRandomPoint();
+                }
+
             }
         }
-
-        return this.gameDic;
+        return gameDic;
     },
 
     createRandomPoint : function(){
@@ -28,7 +37,7 @@ window.G_GameCen = {
         let typeDic = this._mergeThreeListToDelType(threeList);
     },
 
-    _getThreeList : function(){powerTime
+    _getThreeList : function(){
         let threeList = [];
         for(let x = 0 ; x < len ; x++) {
             for (let y = 0; y < len; y++) {
@@ -51,6 +60,30 @@ window.G_GameCen = {
     },
 
     _mergeThreeListToDelType : function(threeList){
+        let dicList = [];
+        let tDic = null;
+        let allDic = this._getDic(true);
+        for(let i = 0 ; i < threeList.length ; i++){
+            let list = threeList[i];
+            if(!this._checkThreeInDic(allDic,list)){
+                tDic = {};
+                dicList.push(tDic);
+            }else{
+                for(let j in dicList){
+                    let dic = dicList[j];
+                    if(){
+
+                    }
+                }
+            }
+            tDic[list[0].x][list[0].y] = tDic.[list[1].x][list[1].y] = tDic.[list[2].x][list[2].y] = 1;
+        }
 
     },
+
+    _checkThreeInDic (dic,threeList){
+        return dic[threeList[0].x][threeList[0].y] || dic[threeList[1].x][threeList[1].y] || dic[threeList[2].x][threeList[2].y]
+    },
+
+
 };

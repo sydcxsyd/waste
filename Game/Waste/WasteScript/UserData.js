@@ -48,4 +48,6 @@ window.G_User = {
         G_Local.saveObj(this._wasteDic_save,this.wasteDic);
     },
 
+
+
 };
