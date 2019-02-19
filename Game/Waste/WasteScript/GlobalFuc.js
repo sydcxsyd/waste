@@ -1,4 +1,4 @@
-let WordCheck = require("WordCheck");
+let WordCheck = require("Game/Waste/WasteScript/WordCheck");
 window.G_Fuc = {
     getGotDic (str) {
         let addDic = {};
