@@ -4,7 +4,26 @@ window.G_GameCen = {
     cellData : {
         type : -1,
         vec : null,
+        exData : null,
     },
+
+    rewardData : {
+        hpChanged : 0,
+        coinChange : 0,
+        expChange : 0,
+        sheildExpChange : 0,
+        monsterBeKilledList : null,
+        atk : 0,
+        totalDmg : 0,
+    },
+
+    monsterData : {
+        hp : 0,
+        maxHp : 0,
+        atk : 0,
+        exp : 0,
+    },
+
     len : 0,
     gameDic : null,
 
@@ -89,40 +108,91 @@ window.G_GameCen = {
         return moveList;
     },
 
-    caculateResult (cellList){
+    caculateReward (cellDataList){
         if(cellList.length == 0){
             return;
         }
-        switch (cellList[0].type) {
+        switch (cellDataList[0].type) {
             case G_Con.cellType.coin:
-                this.caculateCoins(cellList);
-                break;
+                return this.caculateCoins(cellDataList);
             case G_Con.cellType.shield:
-                this.caculateShield(cellList);
-                break;
+                return this.caculateShield(cellDataList);
             case G_Con.cellType.monster:
             case G_Con.cellType.sword:
-                this.caculateDamage(cellList);
-                break;
+                return this.caculateDamage(cellDataList);
             case G_Con.cellType.heal:
-                this.caculateHealth(cellList);
-                break;
+                return this.caculateHealth(cellDataList);
         }
     },
 
-    caculateDamage (cellList){
+    _getRewardObj (){
+        return Object.create(this.rewardData);
+    },
+
+    caculateDamage (cellDataList){
+        let swordList = [];
+        let monsterList = [];
+        for(let value of cellDataList){
+            if(value.type == G_Con.cellType.sword){
+                swordList.push(value);
+            }else if(value.type == G_Con.cellType.monster){
+                monsterList.push(value);
+            }
+        }
+
+        let rewardObj = this._getRewardObj();
+        let exp = 0;
+        let atk = swordList.length * Hero.swardAck + Hero.baseAck;
+        let totalDmg = 0;
+        let monsterBeKilledList = [];
+        for(let value of monsterList){
+            if(this._checkKilled(atk,value)){
+                monsterBeKilledList.push(value);
+                exp += value.exData.exp;
+            }
+            totalDmg += this._getDamage(atk,value);
+        }
+
+        exp = parseInt(exp * Hero.expExGot);
+
+        let hp = parseInt(Hero.lifeSteal * totalDmg);
+
+        rewardObj.expChange = exp;
+        rewardObj.atk = atk;
+        rewardObj.totalDmg = totalDmg;
+        rewardObj.monsterBeKilledList = monsterBeKilledList;
+
+        rewardObj.hpChanged = hp;
+        return rewardObj;
+    },
+
+    _checkKilled (atk,cellData){
+        if(atk >= cellData.exData.hp){
+            return true;
+        }
+        return false;
+    },
+
+    _getDamage (atk,cellData){
+        if(atk >= cellData.exData.hp){
+            return cellData.exData.hp;
+        }else{
+            return atk;
+        }
+    },
+
+    caculateHealth (cellDataList){
+        let hp = cellDataList.length * Hero.heal;
+        hp = Hero.maxHp - Hero.hp >= heal ? heal : Hero.maxHp - Hero.hp;
+        let rewardObj = this._getRewardObj();
+        rewardObj.hpChanged = hp;
+    },
+
+    caculateCoins (cellDataList){
 
     },
 
-    caculateHealth (cellList){
-
-    },
-
-    caculateCoins (cellList){
-
-    },
-
-    caculateShield (cellList){
+    caculateShield (cellDataList){
 
     },
 

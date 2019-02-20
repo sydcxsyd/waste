@@ -157,6 +157,7 @@ cc.Class({
 
     update(dt){
         this.updateSceneType();
+        this.newCellDown();
     },
 
     updateSceneType (){
@@ -186,7 +187,12 @@ cc.Class({
     },
 
     caculatePlayerMove (){
-
+        let chooseList = this.chooseCellsList;
+        let chooseDataList = [];
+        for(let value of chooseList){
+            chooseDataList.push(value.getComponent("DungeonCell").cellData);
+        }
+        G_GameCen.caculateReward(chooseDataList);
     },
 
     monsterMove (){
@@ -194,6 +200,16 @@ cc.Class({
     },
 
     endTurn (){
+
+    },
+
+    destoryCellList (list){
+        for(let i = 0; i < list.length;i++){
+            this.destoryCell(list[i]);
+        }
+    },
+
+    destoryCell (){
 
     },
 
@@ -211,28 +227,45 @@ cc.Class({
     },
 
     addNewCellToDwon(cell){
-        let cellVec = cell.getComponent("DungeonCell").data.vec;
+        let cellVec = cell.getComponent("DungeonCell").cellData.vec;
         cell.__cellVec = cellVec;
         if(!this.willDownCellDic[cellVec.x]){
             this.willDownCellDic[cellVec.x] = [];
         }
-        if(this.willCellDown[cellVec.x].length == 0){
-            this.willCellDown.push(cell);
-        }else{
-            for(let value of this.willCellDown[cellVec.x]){
-                if(value.__cellVec){
 
+        let targetYArr = this.willCellDown[cellVec.x];
+        if(targetYArr.length == 0){
+            targetYArr.push(cell);
+        }else{
+            for(let i = 0 ; i < targetYArr.length; i++){
+                let tCell = targetYArr[i];
+                if(tCell.__cellVec && tCell.__cellVec.y > cell.__cellVec.y){
+                    targetYArr.splice(i,0,cell);
+                    break;
+                }else if(i == targetYArr.length - 1){
+                    targetYArr.push(cell);
+                    break;
                 }
             }
         }
-
 
         this.willCellDown = true;
     },
 
     newCellDown (){
         if(this.willCellDown){
+            for(var i in this.willDownCellDic){
+                let arr = this.willDownCellDic[i];
+                for(let j = 0; j < arr.length;j++){
+                    let vec = cc.v2(parseInt(i),G_GameCen.len + j + 1)
+                    let cell = arr[j];
+                    let cellScript = cell.getComponent("DungeonCell");
+                    cellScript.cellDownAction(vec,cell.cellData.vec);
+                }
+            }
 
+            this.willDownCellDic = {};
+            this.willCellDown = false;
         }
     }
 });

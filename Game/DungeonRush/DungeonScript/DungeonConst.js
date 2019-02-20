@@ -8,4 +8,8 @@ window.G_Con = {
     },
 
     leastChooseNum : 3,
+
+    eventName : {
+
+    },
 };
