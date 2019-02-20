@@ -11,8 +11,9 @@ window.G_GameCen = {
         hpChanged : 0,
         coinChange : 0,
         expChange : 0,
+        shieldChange : 0,
         sheildExpChange : 0,
-        monsterBeKilledList : null,
+        costCellList : null,
         atk : 0,
         totalDmg : 0,
     },
@@ -22,6 +23,7 @@ window.G_GameCen = {
         maxHp : 0,
         atk : 0,
         exp : 0,
+        liveTurns : 0,
     },
 
     len : 0,
@@ -108,9 +110,50 @@ window.G_GameCen = {
         return moveList;
     },
 
+    dealReward (reward){
+        this.delPoints(reward.costCellList);
+
+        Hero.hp += reward.hpChanged;
+        Hero.coin += reward.coinChange;
+        Hero.exp += reward.expChange;
+        Hero.shield += reward.shieldChange;
+        Hero.shieldExp += reward.sheildExpChange;
+
+        Hero.checkCoinLevel();
+        Hero.checkExpLevel();
+        Hero.checkShieldLevel();
+    },
+
+    monsterMove (){
+        let monsterList = this.getListByType(G_Con.cellType.monster);
+        let atk = 0;
+        let atkMonsterList = [];
+        for(let cellData of monsterList){
+            if(cellData.exData.liveTurns > 0){
+                atk += cellData.exData.atk;
+                atkMonsterList.push(cellData);
+            }
+        }
+
+        // G_EventManager.pushEvent(G_Con.eventName.MONSTER_ATK,[atk,atkMonsterList]);
+    },
+
+    getListByType (type){
+        let list = [];
+        for(let cellArr of this.gameDic){
+            for(let cellData of cellArr){
+                if(cellData.type == type){
+                    list.push(cellData);
+                }
+            }
+        }
+        return list;
+    },
+
+    //return obj : this.rewardData
     caculateReward (cellDataList){
         if(cellList.length == 0){
-            return;
+            return null;
         }
         switch (cellDataList[0].type) {
             case G_Con.cellType.coin:
@@ -132,9 +175,11 @@ window.G_GameCen = {
     caculateDamage (cellDataList){
         let swordList = [];
         let monsterList = [];
+        let costCellList = [];
         for(let value of cellDataList){
             if(value.type == G_Con.cellType.sword){
                 swordList.push(value);
+                costCellList.push(value);
             }else if(value.type == G_Con.cellType.monster){
                 monsterList.push(value);
             }
@@ -144,11 +189,10 @@ window.G_GameCen = {
         let exp = 0;
         let atk = swordList.length * Hero.swardAck + Hero.baseAck;
         let totalDmg = 0;
-        let monsterBeKilledList = [];
         for(let value of monsterList){
             if(this._checkKilled(atk,value)){
-                monsterBeKilledList.push(value);
                 exp += value.exData.exp;
+                costCellList.push(value);
             }
             totalDmg += this._getDamage(atk,value);
         }
@@ -157,10 +201,10 @@ window.G_GameCen = {
 
         let hp = parseInt(Hero.lifeSteal * totalDmg);
 
+        rewardObj.costCellList = costCellList;
         rewardObj.expChange = exp;
         rewardObj.atk = atk;
         rewardObj.totalDmg = totalDmg;
-        rewardObj.monsterBeKilledList = monsterBeKilledList;
 
         rewardObj.hpChanged = hp;
         return rewardObj;
@@ -186,14 +230,41 @@ window.G_GameCen = {
         hp = Hero.maxHp - Hero.hp >= heal ? heal : Hero.maxHp - Hero.hp;
         let rewardObj = this._getRewardObj();
         rewardObj.hpChanged = hp;
+
+        rewardObj.costCellList = [];
+        for(let value of cellDataList){
+            rewardObj.costCellList.push(value);
+        }
+
+        return rewardObj;
     },
 
     caculateCoins (cellDataList){
+        let coins = cellDataList.length * Hero.coinExGot;
+        let rewardObj = this._getRewardObj();
+        rewardObj.coinChange = coins;
 
+        rewardObj.costCellList = [];
+        for(let value of cellDataList){
+            rewardObj.costCellList.push(value);
+        }
+        return rewardObj;
     },
 
     caculateShield (cellDataList){
+        let shieldGot = cellDataList.length * Hero.shieldExGot;
+        let shieldExpGot = shieldGot * 1;//todo exp
+        shieldGot = Hero.maxShield - Hero.shield >= shieldGot ? shieldGot : Hero.maxShield - Hero.shield;
+        let rewardObj = this._getRewardObj();
+        rewardObj.shieldChange = shieldGot;
+        rewardObj.sheildExpChange = shieldExpGot;
 
+        rewardObj.costCellList = [];
+        for(let value of cellDataList){
+            rewardObj.costCellList.push(value);
+        }
+
+        return rewardObj;
     },
 
 };

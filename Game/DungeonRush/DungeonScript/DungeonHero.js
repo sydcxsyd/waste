@@ -10,6 +10,9 @@ let Hero = {
     shield : 0, //防御力
     maxShield : 0,//最大防御力
     shieldDefense : 0,//单个盾的防御力
+
+    shieldExp : 0,
+    shieldExGot : 0,
     shieldLevel : 0, //防御力等级
 
     coin : 0,//当前coin指
@@ -23,6 +26,18 @@ let Hero = {
     skills : {},
 
     init (){
+
+    },
+
+    checkCoinLevel (){
+
+    },
+
+    checkExpLevel (){
+
+    },
+
+    checkShieldLevel (){
 
     },
 };

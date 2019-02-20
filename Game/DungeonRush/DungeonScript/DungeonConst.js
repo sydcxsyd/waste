@@ -10,6 +10,6 @@ window.G_Con = {
     leastChooseNum : 3,
 
     eventName : {
-
+        MONSTER_ATK : "MONSTER_ATK",
     },
 };
