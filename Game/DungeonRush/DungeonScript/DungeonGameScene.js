@@ -134,10 +134,8 @@ cc.Class({
     },
 
     reloadChooseShow (){
-        if(this.chooseCellsList.length == 1){
-            return;
-        }
-
+        let reward = this.getCellsReward(this.chooseCellsList);
+        //todo show
     },
 
     allCellsDo (fuc){
@@ -186,13 +184,21 @@ cc.Class({
         }
     },
 
-    caculatePlayerMove (){
-        let chooseList = this.chooseCellsList;
+    getCellsReward (chooseList){
         let chooseDataList = [];
         for(let value of chooseList){
             chooseDataList.push(value.getComponent("DungeonCell").cellData);
         }
-        G_GameCen.caculateReward(chooseDataList);
+        return G_GameCen.caculateReward(chooseDataList);
+    },
+
+    caculatePlayerMove (){
+        let reward = this.getCellsReward(this.chooseCellsList);
+        G_GameCen.dealReward(reward);
+        for(let cellData of reward.costCellList){
+            let cell = this.getCellByVec(cellData.vec);
+            this.destoryCell(cell);
+        }
     },
 
     monsterMove (){
@@ -209,8 +215,10 @@ cc.Class({
         }
     },
 
-    destoryCell (){
-
+    destoryCell (cell){
+        let cellScript = cell.getComponent("DungeonCell");
+        this.allCellDic[cellScript.cellData.vec.x][cellScript.cellData.vec.y] = null;
+        cell.destroy();
     },
 
     cellsDown (moveList){

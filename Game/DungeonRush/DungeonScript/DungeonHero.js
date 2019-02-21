@@ -10,6 +10,7 @@ let Hero = {
     shield : 0, //防御力
     maxShield : 0,//最大防御力
     shieldDefense : 0,//单个盾的防御力
+    shieldDurability : 0,//盾牌耐久性（防御后损坏可能性）
 
     shieldExp : 0,
     shieldExGot : 0,
@@ -38,6 +39,10 @@ let Hero = {
     },
 
     checkShieldLevel (){
+
+    },
+
+    checkHp (){
 
     },
 };

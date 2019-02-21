@@ -14,8 +14,10 @@ window.G_GameCen = {
         shieldChange : 0,
         sheildExpChange : 0,
         costCellList : null,
-        atk : 0,
-        totalDmg : 0,
+        allCellList : null,
+        atk : 0,            //攻击
+        totalDmg : 0,       //造成总伤害
+        beHurt : 0,         //被伤害
     },
 
     monsterData : {
@@ -111,17 +113,27 @@ window.G_GameCen = {
     },
 
     dealReward (reward){
-        this.delPoints(reward.costCellList);
+        if(reward.costCellList){
+            this.delPoints(reward.costCellList);
+        }
 
         Hero.hp += reward.hpChanged;
         Hero.coin += reward.coinChange;
         Hero.exp += reward.expChange;
         Hero.shield += reward.shieldChange;
         Hero.shieldExp += reward.sheildExpChange;
+        if(reward.costCellList.length != reward.allCellList.length){
+            for(let cellData of reward.allCellList){
+                if(cellData.type == G_Con.cellType.monster){
+                    cellData.exData.hp -= reward.atk;
+                }
+            }
+        }
 
         Hero.checkCoinLevel();
         Hero.checkExpLevel();
         Hero.checkShieldLevel();
+        Hero.checkHp();
     },
 
     monsterMove (){
@@ -134,8 +146,25 @@ window.G_GameCen = {
                 atkMonsterList.push(cellData);
             }
         }
+        let rewardObj = this._getRewardObj();
+        let hpDel = -(atk - (Hero.shield * Hero.shieldDefense));
+        hpDel = Math.max(0,hpDel);
 
-        // G_EventManager.pushEvent(G_Con.eventName.MONSTER_ATK,[atk,atkMonsterList]);
+        let usedShieldNum = Math.min(Math.ceil(atk / Hero.shieldDefense),Hero.shield);
+        let costShieldNum = 0;
+        while(usedShieldNum > 0){
+            if(Math.random() > Hero.shieldDurability){
+                costShieldNum -= 1;
+            }
+            usedShieldNum--;
+        }
+
+        rewardObj.hpChanged = hpDel;
+        rewardObj.shieldChange = costShieldNum;
+        rewardObj.beHurt = atk;
+        rewardObj.allCellList = atkMonsterList;
+
+        return rewardObj;
     },
 
     getListByType (type){
@@ -205,6 +234,7 @@ window.G_GameCen = {
         rewardObj.expChange = exp;
         rewardObj.atk = atk;
         rewardObj.totalDmg = totalDmg;
+        rewardObj.allCellList = cellDataList;
 
         rewardObj.hpChanged = hp;
         return rewardObj;
@@ -236,6 +266,8 @@ window.G_GameCen = {
             rewardObj.costCellList.push(value);
         }
 
+        rewardObj.allCellList = cellDataList;
+
         return rewardObj;
     },
 
@@ -248,6 +280,9 @@ window.G_GameCen = {
         for(let value of cellDataList){
             rewardObj.costCellList.push(value);
         }
+
+        rewardObj.allCellList = cellDataList;
+
         return rewardObj;
     },
 
@@ -263,6 +298,8 @@ window.G_GameCen = {
         for(let value of cellDataList){
             rewardObj.costCellList.push(value);
         }
+
+        rewardObj.allCellList = cellDataList;
 
         return rewardObj;
     },
