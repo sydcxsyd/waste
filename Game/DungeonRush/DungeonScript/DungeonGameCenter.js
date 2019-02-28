@@ -53,7 +53,7 @@ window.G_GameCen = {
     },
 
     createRandomPoint : function(abandonTypeList,vec){
-        let cellData = Object.create(this.cellData);
+        let cellData = G_Common.copyObj(this.cellData);
         abandonTypeList = abandonTypeList || [];
         let typeList = [];
         for(let i in G_Con.cellType){
@@ -304,4 +304,14 @@ window.G_GameCen = {
         return rewardObj;
     },
 
+    saveGame (){
+
+    },
+
+    saveUserData(key){
+        if(this[key]){
+            let jsonStr = JSON.stringify(this[key]);
+            cc.sys.localStorage.setItem(key, jsonStr);
+        }
+    },
 };

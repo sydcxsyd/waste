@@ -1,3 +1,4 @@
+let DungeonSheet = require("DungeonSheet");
 let Hero = {
     hp : 0, //当前生命值
     heal : 0,   //治愈比
@@ -16,7 +17,7 @@ let Hero = {
     shieldExGot : 0,
     shieldLevel : 0, //防御力等级
 
-    coin : 0,//当前coin指
+    coin : 0,//当前coin
     coinExGot : 0,//coin获得比
     coinLevel : 0,//coin等级
 
@@ -31,19 +32,39 @@ let Hero = {
     },
 
     checkCoinLevel (){
-
+        let levelData = DungeonSheet.heroLevelData[this.coinLevel];
+        let needExp = levelData.coin;
+        if(this.coin >= needExp){
+            this.coinLevel++;
+            G_EventManager.pushEvent(G_Con.eventName.HERO_COIN_UP);
+            this.checkCoinLevel();
+        }
     },
 
     checkExpLevel (){
-
+        let levelData = DungeonSheet.heroLevelData[this.level];
+        let needExp = levelData.exp;
+        if(this.exp >= needExp){
+            this.level++;
+            G_EventManager.pushEvent(G_Con.eventName.HERO_LEVEL_UP);
+            this.checkExpLevel();
+        }
     },
 
     checkShieldLevel (){
-
+        let levelData = DungeonSheet.heroLevelData[this.shieldLevel];
+        let needExp = levelData.shield;
+        if(this.shieldExp >= needExp){
+            this.shieldLevel++;
+            G_EventManager.pushEvent(G_Con.eventName.HERO_SHEILD_UP);
+            this.checkShieldLevel();
+        }
     },
 
     checkHp (){
-
+        if(this.hp <= 0){
+            G_EventManager.pushEvent(G_Con.eventName.HERO_DEAD);
+        }
     },
 };
 module.exports = Hero;

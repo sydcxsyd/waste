@@ -20,4 +20,12 @@ window.G_Common = {
         return typeof obj === 'number' && obj%1 === 0;      //是整数，则返回true，否则返回false
     },
 
+    copyObj(obj){
+        let newObj = {};
+        for(let i in obj){
+            newObj[i] = obj[i];
+        }
+        return newObj;
+    },
+
 };

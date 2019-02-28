@@ -11,5 +11,9 @@ window.G_Con = {
 
     eventName : {
         MONSTER_ATK : "MONSTER_ATK",
+        HERO_DEAD : "HERO_DEAD",
+        HERO_LEVEL_UP : "HERO_LEVEL_UP",
+        HERO_SHEILD_UP : "HERO_SHEILD_UP",
+        HERO_COIN_UP : "HERO_COIN_UP",
     },
 };
